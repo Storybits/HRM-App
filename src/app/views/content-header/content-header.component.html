@@ -1,0 +1,11 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    {{ pageTitle }}
+    <small>{{ pageDescription }}</small>
+  </h1>
+  <ol class="breadcrumb">
+    <li *ngFor="let level of levels; let i = index;" [ngClass]="level.class"  >{{ level.name }}</li>
+
+  </ol>
+</section>

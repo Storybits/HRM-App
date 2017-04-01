@@ -1,0 +1,108 @@
+<app-content-header [pageTitle]="pageTitle" [pageDescription]="pageDescription" [levels]="currentLevel"></app-content-header>
+<!-- Main views -->
+<section class="content">
+
+  <!-- Create Employee -->
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="form-group">
+        <button class="btn btn-primary" (click)="createDialog.show()">
+          <span class="glyphicon glyphicon-user"></span> Create employee
+        </button>
+      </div>
+    </div>
+  </div>
+  <app-modal-dialog #createDialog>
+    <div class="app-modal-content">
+      <app-create-employee></app-create-employee>
+    </div>
+  </app-modal-dialog>
+
+
+  <app-modal-dialog #deleteDialog>
+    <div class="app-modal-content">
+      <app-delete-employee></app-delete-employee>
+    </div>
+  </app-modal-dialog>
+  <!-- ./Create Employee -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+
+        <!-- Table box header -->
+        <div class="box-header">
+          <h3 class="box-title">Employees</h3>
+          <div class="box-tools">
+            <div class="input-group input-group-sm" style="width: 250px;">
+              <input type="text" #term (keyup)="search(term.value)" name="table_search" class="form-control pull-right" placeholder="Search" />
+              <div class="input-group-btn">
+                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- ./ Table box header -->
+
+
+        <!-- Employee table -->
+        <div class="box-body table-responsive no-padding">
+          <table class="table table-bordered table-hover dataTable">
+            <thead>
+              <tr role="row DTTT_selectable">
+                <th class="sorting_asc" (click)="sortEmployees('id')">id</th>
+                <th class="sorting" (click)="sortEmployees('name')">name</th>
+                <th class="sorting" (click)="sortEmployees('gender')">gender</th>
+                <th class="sorting" (click)="sortEmployees('job_role')">job role</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let employee of pagedItems" role="row">
+                <td>{{ employee.id }}</td>
+                <td>{{ employee.first_name }} {{ employee.last_name }}</td>
+                <td>{{ employee.gender }}</td>
+                <td>{{ employee.job_role }}</td>
+                <td>
+                  <button class="btn-default" (click)="editEmployeeDialog(employee)">
+                    <span class="glyphicon glyphicon-edit"></span>
+                  </button>
+                  <button class="btn-danger" (click)="deleteEmployeeDialog(employee);deleteDialog.show()">
+                    <span class="glyphicon glyphicon-trash"></span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- ./ Employee table -->
+
+
+
+
+        <!-- Table foot with paginator -->
+        <div class="box-footer clearfix">
+          <!-- paginator -->
+          <ul *ngIf="pager.pages && pager.pages.length" class="pagination pagination-sm no-margin pull-right">
+            <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a (click)="setPage(pager.currentPage - 1)" routerLink="">Previous</a>
+            </li>
+            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+              <a (click)="setPage(page)" routerLink="">{{page}}</a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+              <a (click)="setPage(pager.currentPage + 1)" routerLink="">Next</a>
+            </li>
+
+          </ul>
+          <!-- ./paginator -->
+        </div>
+        <!-- ./ Table foot with paginator -->
+      </div>
+
+    </div>
+  </div>
+
+</section>
+<!-- /. Main views -->
