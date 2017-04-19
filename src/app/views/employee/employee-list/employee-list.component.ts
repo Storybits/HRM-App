@@ -1,4 +1,4 @@
-import {Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Employee} from '../../../services/employee/employee.model';
 import {EmployeeService} from '../../../services/employee/employee.service';
 import {PaginatorService} from '../../../services/paginator/paginator.service';
@@ -30,7 +30,6 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   private editSub = new Subscription();
   private employeeSub = new Subscription();
 
-  isDesktop = false;
   public searchFilter = { text: 'All fields', filter: 'all'};
   public isSearching: boolean = false; // true when search is ongoing
   pager: any = {}; // // pager object
@@ -168,7 +167,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
    * @returns {any}
    */
   selectedClass(columnName): string {
-    let styleClass = 'hidden-xs ';
+    const styleClass = 'hidden-xs ';
     if (columnName === this.sort.column) {
       return styleClass + this.sort.descending ? 'sorting_desc' : 'sorting_asc';
     }
