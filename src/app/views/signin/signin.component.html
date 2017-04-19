@@ -1,0 +1,62 @@
+<body class="">
+<div class="container">
+  <div class="login-box">
+    <div class="login-logo">
+      <b>HRM</b> app
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body bg-gray-light">
+      <div class="row">
+        <div class="pull-right">
+        <a type="button"  (click)="selectLang('en')">
+          <span class="lang-sm" lang="en"></span>
+        </a>
+          <a type="button" (click)="selectLang('nl')">
+            <span class="lang-sm" lang="nl"></span>
+          </a>
+        </div>
+      </div>
+
+      <div class="alert alert-danger alert-dismissible" role="alert" *ngIf="showWarning">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="submitted=false"><span aria-hidden="true">&times;</span></button>
+        {{ 'SIGNIN-FAILED' | translate}}
+      </div>
+
+      <p *ngIf="!showWarning || loading" class="login-box-msg">{{ 'SIGNIN-TEXT' | translate }}</p>
+
+      <form [formGroup]="form" (ngSubmit)="signIn(form.value, form.valid)">
+        <div class="form-group has-feedback" [ngClass]="{'has-error': !validateInput('username') }">
+          <input type="email" class="form-control" id="username" placeholder="{{ 'E-mail' | translate }}" formControlName="username" />
+          <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback" [ngClass]="{'has-error': !validateInput('password') }">
+          <input type="password" class="form-control" id="password" placeholder="{{ 'Password' | translate }}" formControlName="password" />
+          <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="form-group has-feedback">
+              <label>
+                <input type="checkbox">
+                {{ 'Remember' | translate }}
+              </label>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-xs-4">
+            <button type="submit" class="btn btn-primary btn-block btn-flat"  [disabled]="loading">{{ 'Sign in' | translate }}</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+
+
+      <a href="#">{{ 'I forgot my password' | translate}}</a><br>
+
+    </div>
+    <!-- /.login-box-body -->
+  </div>
+  <!-- /.login-box -->
+</div>
+</body>

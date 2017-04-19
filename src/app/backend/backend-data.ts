@@ -1,9 +1,22 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 
-export class EmployeeData implements InMemoryDbService {
+export class BackendData implements InMemoryDbService {
 
 
   createDb(): {} {
+    const users = [
+      {
+        id: 1,
+        username: 'mark',
+        password: 'test1234'
+      },
+      {
+        id: 2,
+        username: 'trivento',
+        password: 'trivento'
+      }
+
+    ];
 
     const employees = [
       {
@@ -458,7 +471,8 @@ export class EmployeeData implements InMemoryDbService {
       }
     ];
 
-    return {employees};
+    return {users: users, employees: employees};
+
   }
 
 
