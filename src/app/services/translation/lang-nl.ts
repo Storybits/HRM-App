@@ -2,7 +2,7 @@ export const LANG_NL_NAME = 'nl';
 
 export const LANG_NL_TRANS = {
   'NEW EMPLOYEE': 'Nieuwe medewerker',
-  'CREATE NEW EMPLOYEE': 'Nieuwe medewerker aanmaken',
+  'CREATE NEW EMPLOYEE': 'Medewerker aanmaken',
   'EMPLOYEES': 'Medewerkers',
   'CREATE EMPLOYEE': 'Medewerker aanmaken',
   'FIRST NAME': 'Voornaam',

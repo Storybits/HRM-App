@@ -26,7 +26,7 @@ import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import {TRANSLATION_PROVIDERS} from './services/translation/translations';
 import { TranslatePipe } from './services/translation/translate.pipe';
 import { TranslateService } from './services/translation/translate.service';
-import { ModalService } from './services/modal/modal.service';
+import { ModalService } from './services/modal/modal.service';;
 
 
 @NgModule({
@@ -44,7 +44,7 @@ import { ModalService } from './services/modal/modal.service';
     DeleteEmployeeComponent,
     ModalDialogComponent,
     TranslatePipe,
-    PageNotFoundComponent
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,

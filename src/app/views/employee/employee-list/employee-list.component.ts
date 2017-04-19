@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Employee} from '../../../services/employee/employee.model';
 import {EmployeeService} from '../../../services/employee/employee.service';
 import {PaginatorService} from '../../../services/paginator/paginator.service';
@@ -21,7 +21,6 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   public pageDescription: string = 'A list of all employees';
   public currentLevel: [{}] = [ {'name': 'Employee', 'class': ''}, {'name': 'list', 'class': 'active'}];
 
-
   // Employee list and object initializers
   private employees: Employee[];
   private employee = new Employee();
@@ -31,6 +30,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   private editSub = new Subscription();
   private employeeSub = new Subscription();
 
+  isDesktop = false;
   public searchFilter = { text: 'All fields', filter: 'all'};
   public isSearching: boolean = false; // true when search is ongoing
   pager: any = {}; // // pager object
@@ -60,6 +60,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
     this.employeeSub = this.employeeService.employeeList$.subscribe(
       e => { this.employees = <Employee[]>e; this.setPage(this.pager.currentPage); }
     );
+
   }
 
   ngOnInit() {
@@ -167,10 +168,11 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
    * @returns {any}
    */
   selectedClass(columnName): string {
+    let styleClass = 'hidden-xs ';
     if (columnName === this.sort.column) {
-      return this.sort.descending ? 'sorting_desc' : 'sorting_asc';
+      return styleClass + this.sort.descending ? 'sorting_desc' : 'sorting_asc';
     }
-    return 'sorting';
+    return styleClass + ' sorting';
   }
 
   /**

@@ -32,7 +32,7 @@
 
         <!-- Table box header -->
         <div class="box-header">
-          <h3 class="box-title">{{ 'Employees' | translate }}</h3>
+          <h3 class="box-title"><span class="hidden-xs">{{ 'Employees' | translate }}</span></h3>
 
           <div class="box-tools">
 
@@ -66,19 +66,19 @@
           <table class="table table-bordered table-hover dataTable">
             <thead>
               <tr role="row">
-                <th [class]="selectedClass('id')" (click)="sortEmployees('id')">{{ 'ID' | translate }}</th>
+                <th [class]="selectedClass('id')"  (click)="sortEmployees('id')">{{ 'ID' | translate }}</th>
                 <th [class]="selectedClass('first_name')" (click)="sortEmployees('first_name')">{{ 'First name' | translate }}</th>
                 <th [class]="selectedClass('last_name')" (click)="sortEmployees('last_name')">{{ 'Last name' | translate }}</th>
-                <th [class]="selectedClass('job_role')" (click)="sortEmployees('job_role')">{{ 'Job role' | translate }}</th>
+                <th [class]="selectedClass('job_role')"  (click)="sortEmployees('job_role')">{{ 'Job role' | translate }}</th>
                 <th>{{ 'Action' | translate }}</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let employee of pagedItems" role="row">
-                <td (click)="openDialog(employee)" style="cursor: pointer">{{ employee.id }}</td>
+                <td  class="hidden-xs" (click)="openDialog(employee)" style="cursor: pointer">{{ employee.id }}</td>
                 <td (click)="openDialog(employee)" style="cursor: pointer">{{ employee.first_name }}</td>
                 <td (click)="openDialog(employee)" style="cursor: pointer">{{ employee.last_name }}</td>
-                <td (click)="openDialog(employee)" style="cursor: pointer">{{ employee.job_role }}</td>
+                <td  class="hidden-xs" (click)="openDialog(employee)" style="cursor: pointer">{{ employee.job_role }}</td>
 
                 <td>
                   <button class="btn btn-default" (click)="openDialog(employee)">

@@ -7,6 +7,7 @@
     <!-- /.login-logo -->
     <div class="login-box-body bg-gray-light">
       <div class="row">
+
         <div class="pull-right">
         <a type="button"  (click)="selectLang('en')">
           <span class="lang-sm" lang="en"></span>
@@ -44,8 +45,8 @@
             </div>
           </div>
           <!-- /.col -->
-          <div class="col-xs-4">
-            <button type="submit" class="btn btn-primary btn-block btn-flat"  [disabled]="loading">{{ 'Sign in' | translate }}</button>
+          <div class="col-xs-4 pull-right">
+            <button type="submit" class="btn btn-primary btn-flat"  [disabled]="loading">{{ 'Sign in' | translate }}</button>
           </div>
           <!-- /.col -->
         </div>
