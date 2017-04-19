@@ -40,8 +40,6 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   @ViewChild('createDialog') private createDialogModal: ModalDialogComponent;
   @ViewChild('deleteDialog') private deleteDialogModal: ModalDialogComponent;
 
-  // @ViewChild('term') private searchTerm: ElementRef;
-
   constructor(private employeeService: EmployeeService,
               private paginatorService: PaginatorService,
               private modalService: ModalService) {
