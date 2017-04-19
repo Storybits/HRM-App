@@ -1,4 +1,4 @@
-import {Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {UserService} from '../../services/user/user.service';
 import {User} from '../../services/user/user.model';
 import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
@@ -19,6 +19,7 @@ export class SigninComponent  {
   public form: FormGroup;
   username: FormControl;
   password: FormControl;
+
 
   constructor(private userService: UserService, private fb: FormBuilder, private router: Router, private _translate: TranslateService) {
     this.createForm();
