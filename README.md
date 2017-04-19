@@ -1,4 +1,4 @@
-# HRM Manager
+# HRM app
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 4.0.0.
 
 This project is an angular example with a login screen and a list of employees once logged in. The employees are retrieved from an in-memory database on which several operations can be executed including editing, creating new employees, deleting and searching through the list.

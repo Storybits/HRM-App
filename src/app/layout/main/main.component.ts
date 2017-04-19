@@ -11,8 +11,8 @@ import {Helper} from '../../services/helper';
 export class MainComponent {
 
 
-  private appName = 'HRM Manager';
-  private appVersion = '4.0';
+  appName = 'HRM App';
+  appVersion = '4.0';
   authenticated  = false;
   public user = new User('', '', '');
 
