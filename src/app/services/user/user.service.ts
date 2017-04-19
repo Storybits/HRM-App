@@ -5,7 +5,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import {Helper} from '../helper';
 import {Router} from '@angular/router';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 
 
 @Injectable()
@@ -16,15 +16,38 @@ export class UserService {
 
   constructor(private http: Http, private router: Router) { }
 
+  /**
+   * Find a user
+   * @param user
+   * @returns {Observable<User>}
+   */
   findUser(user: User): Observable<any> {
     return this.http.get(this.userApiUrl).map(response => this.searchUser(response, user)).catch(Helper.handleError);
   }
 
+  /**
+   * Authenticate user
+   * @returns {Observable<User>}
+   */
   authenticate(): Observable<any> {
     return this.http.get(this.userApiUrl).map(res => this.searchForToken(Helper.extractData(res)));
   }
 
-  searchForToken(data: any): {} {
+  /**
+   * Sign out (clears session storage)
+   */
+  signOut(): void {
+    sessionStorage.clear();
+    this.router.navigate(['']);
+  }
+
+
+  /**
+   * Search for user token
+   * @param data
+   * @returns {User}
+   */
+  private searchForToken(data: any): {} {
     const storedToken = sessionStorage.getItem('hrm-token');
     let user: User = new User('', '');
     if (!Helper.isEmpty(storedToken)) {
@@ -39,7 +62,11 @@ export class UserService {
 
   }
 
-  setToken(user: User): void {
+  /**
+   * Set user token in db and localSession
+   * @param user
+   */
+  private setToken(user: User): void {
     const token: string  = Helper.generateUUID();
     sessionStorage.setItem('hrm-token', token);
     user.token = token;
@@ -50,12 +77,13 @@ export class UserService {
 
   }
 
-  signOut(): void {
-    sessionStorage.clear();
-    this.router.navigate(['']);
-  }
-
-  searchUser(res: Response, user: User): any {
+  /**
+   * Search for a user in db
+   * @param res
+   * @param user
+   * @returns {{authenticated: boolean}}
+   */
+  private searchUser(res: Response, user: User): any {
     const userData = Helper.extractData(res);
     const result = {authenticated: false};
     const foundPersons: any[] = userData.filter(res => res.username === user.username);
