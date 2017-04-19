@@ -1,10 +1,10 @@
 import {Component } from '@angular/core';
-import {UserService} from '../services/user/user.service';
-import {User} from '../services/user/user.model';
+import {UserService} from '../../services/user/user.service';
+import {User} from '../../services/user/user.model';
 import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
-import {FormValidator} from '../services/form/form-validator';
+import {FormValidator} from '../../services/form/form-validator';
 import {Router} from '@angular/router';
-import {TranslateService} from '../services/translation/translate.service';
+import {TranslateService} from '../../services/translation/translate.service';
 
 
 @Component({

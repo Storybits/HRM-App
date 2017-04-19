@@ -1,17 +1,24 @@
 import { Observable } from 'rxjs/Observable';
 import {  Response } from '@angular/http';
 
+/**
+ * Helper class with some static methods that can be used throughout the project
+ */
 export class Helper {
 
-  // helper function
+  /**
+   * Empty check
+   * @param val
+   * @returns {boolean}
+   */
   public static isEmpty = function(val) { return (val === undefined || val == null  || val.length <= 0) ? true : false; }
 
   /**
-   * Catches errors when calling http.get
+   * Catches errors on http Response and logs to console
    * @param error
    * @returns {any}
    */
-  public static handleError(error: Response | any) {
+  public static handleError(error: Response | any): Observable<any> {
     let errorMessage: string;
     if (error instanceof Response) {
       const body = error.json() || '';
@@ -45,5 +52,20 @@ export class Helper {
     return body.data || {};
   }
 
+  /**
+   * Generates a unique id
+   * @returns {string}
+   */
+  public static generateUUID (): string {
+    let d = new Date().getTime();
+    if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
+      d += performance.now();
+    }
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      const r = (d + Math.random() * 16) % 16 | 0;
+      d = Math.floor(d / 16);
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+  }
 
 }

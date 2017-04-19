@@ -1,8 +1,8 @@
 <div class="modal-header">
-  <h3>Warning:</h3>
+  <h3>{{ 'Warning' | translate }}</h3>
 </div>
 <div class="modal-body">
-  Are you sure you want to delete {{ employee.first_name }} {{ employee.last_name }}
+  {{ 'DELETE-EMPLOYEE-MESSAGE' | translate }}:<br /><strong>{{ employee.first_name }} {{ employee.last_name }}, {{ employee.job_role }}</strong>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-default" (click)="hideModal()">Cancel</button>

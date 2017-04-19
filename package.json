@@ -20,11 +20,13 @@
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
+    "@types/node": "^6.0.68",
     "admin-lte": "^2.3.11",
+    "angular-in-memory-web-api": "^0.3.1",
     "core-js": "^2.4.1",
     "rxjs": "^5.2.0",
-    "zone.js": "^0.8.4",
-    "angular-in-memory-web-api": "^0.3.1"
+    "underscore": "^1.8.3",
+    "zone.js": "^0.8.4"
   },
   "devDependencies": {
     "@angular/cli": "1.0.0",
@@ -44,5 +46,9 @@
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",
     "typescript": "~2.2.0"
+  },
+  "frontend": {
+    "name": "YOUR PROJECT NAME",
+    "HRM Manager": "src/app"
   }
 }

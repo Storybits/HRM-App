@@ -1,4 +1,4 @@
-<app-content-header [pageTitle]="pageTitle" [pageDescription]="pageDescription" [levels]="currentLevel"></app-content-header>
+<app-content-header [pageTitle]="pageTitle |translate" [pageDescription]="pageDescription | translate" [levels]="currentLevel"></app-content-header>
 <!-- Main views -->
 <section class="content">
 
@@ -7,7 +7,7 @@
     <div class="col-xs-12">
       <div class="form-group">
         <button class="btn btn-primary" (click)="createDialog.show()">
-          <span class="glyphicon glyphicon-user"></span> Create employee
+          <span class="glyphicon glyphicon-user"></span> {{ 'Create employee' | translate }}
         </button>
       </div>
     </div>
@@ -32,15 +32,30 @@
 
         <!-- Table box header -->
         <div class="box-header">
-          <h3 class="box-title">Employees</h3>
+          <h3 class="box-title">{{ 'Employees' | translate }}</h3>
+
           <div class="box-tools">
+
             <div class="input-group input-group-sm" style="width: 250px;">
-              <input type="text" #term (keyup)="search(term.value)" name="table_search" class="form-control pull-right" placeholder="Search" />
               <div class="input-group-btn">
-                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{ searchFilter.text | translate  }}
+                  <span class="fa fa-caret-down"></span></button>
+                <ul class="dropdown-menu">
+                  <li class="disabled"><a>Filter</a></li>
+                  <li class="divider"></li>
+                  <li [ngClass]="{'bg-gray': searchFilter.filter==='all' }"><a (click)="searchFilter = {text: 'All fields', filter: 'all'}">{{ 'All fields' | translate}}</a></li>
+                  <li [ngClass]="{'bg-gray': searchFilter.filter==='first_name' }"><a (click)="searchFilter = {text: 'First name', filter: 'first_name'}">{{ 'First Name' | translate}}</a></li>
+                  <li [ngClass]="{'bg-gray': searchFilter.filter==='last_name' }"><a (click)="searchFilter = {text: 'Last name', filter: 'last_name'}">{{ 'Last Name' | translate}}</a></li>
+                  <li [ngClass]="{'bg-gray': searchFilter.filter==='job_role' }"><a (click)="searchFilter = {text: 'Job role', filter: 'job_role'}">{{ 'Job Role' | translate}}</a></li>
+                </ul>
+              </div>
+              <!-- /btn-group -->
+              <input type="text" #term (keyup)="searchEmployee(term.value)" name="table_search" class="form-control pull-right" placeholder="{{ 'Search' | translate }}" />
+
+              <div class="input-group-btn">
+                <button type="button" (click)="searchEmployee(term.value)" class="btn btn-default"><span class="fa" [ngClass]="getSearchButtonClass()" ></span></button>
               </div>
             </div>
-
           </div>
         </div>
         <!-- ./ Table box header -->
@@ -51,25 +66,24 @@
           <table class="table table-bordered table-hover dataTable">
             <thead>
               <tr role="row DTTT_selectable">
-                <th class="sorting_asc" (click)="sortEmployees('id')">id</th>
-                <th class="sorting" (click)="sortEmployees('name')">name</th>
-                <th class="sorting" (click)="sortEmployees('gender')">gender</th>
-                <th class="sorting" (click)="sortEmployees('job_role')">job role</th>
-                <th>Action</th>
+                <th [class]="selectedClass('first_name')" (click)="sortEmployees('first_name')">{{ 'First name' | translate }}</th>
+                <th [class]="selectedClass('last_name')" (click)="sortEmployees('last_name')">{{ 'Last name' | translate }}</th>
+                <th [class]="selectedClass('job_role')" (click)="sortEmployees('job_role')">{{ 'Job role' | translate }}</th>
+                <th>{{ 'Action' | translate }}</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let employee of pagedItems" role="row">
-                <td>{{ employee.id }}</td>
-                <td>{{ employee.first_name }} {{ employee.last_name }}</td>
-                <td>{{ employee.gender }}</td>
-                <td>{{ employee.job_role }}</td>
+                <td (click)="openDialog(employee)" style="cursor: pointer">{{ employee.first_name }}</td>
+                <td (click)="openDialog(employee)" style="cursor: pointer">{{ employee.last_name }}</td>
+                <td (click)="openDialog(employee)" style="cursor: pointer">{{ employee.job_role }}</td>
+
                 <td>
-                  <button class="btn-default" (click)="editEmployeeDialog(employee)">
-                    <span class="glyphicon glyphicon-edit"></span>
+                  <button class="btn btn-default" (click)="openDialog(employee)">
+                    <span class="fa fa-edit"></span>
                   </button>
-                  <button class="btn-danger" (click)="deleteEmployeeDialog(employee);deleteDialog.show()">
-                    <span class="glyphicon glyphicon-trash"></span>
+                  <button class="btn btn-danger" (click)="openDialog(employee, 'delete')">
+                    <span class="fa fa-trash"></span>
                   </button>
                 </td>
               </tr>
@@ -86,13 +100,13 @@
           <!-- paginator -->
           <ul *ngIf="pager.pages && pager.pages.length" class="pagination pagination-sm no-margin pull-right">
             <li [ngClass]="{disabled:pager.currentPage === 1}">
-              <a (click)="setPage(pager.currentPage - 1)" routerLink="">Previous</a>
+              <a (click)="setPage(pager.currentPage - 1)" routerLink="/secure">{{ 'Previous' | translate }}</a>
             </li>
             <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-              <a (click)="setPage(page)" routerLink="">{{page}}</a>
+              <a (click)="setPage(page)" routerLink="/secure">{{page}}</a>
             </li>
             <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-              <a (click)="setPage(pager.currentPage + 1)" routerLink="">Next</a>
+              <a (click)="setPage(pager.currentPage + 1)" routerLink="/secure">{{ 'Next' | translate }}</a>
             </li>
 
           </ul>

@@ -1,19 +1,32 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 
-export class BackendData implements InMemoryDbService {
 
+/**
+ * In Memory database
+ * api/users returns users
+ * api/employees returns employees
+ */
+export class BackendData implements InMemoryDbService {
 
   createDb(): {} {
     const users = [
       {
         id: 1,
-        username: 'mark',
-        password: 'test1234'
+        name: 'Mark Westenberg',
+        image: 'assets/images/Mark-Westenberg.jpg',
+        username: 'info@markwestenberg.nl',
+        password: 'test1234',
+        job_role: 'Developer',
+        token: '',
       },
       {
         id: 2,
-        username: 'trivento',
-        password: 'trivento'
+        name: 'Walter van Berkel',
+        image: 'assets/images/Walter-berkel-trivento.jpg',
+        username: 'trivento@trivento.nl',
+        password: 'Trivento',
+        job_role: 'HR Manager',
+        token: '',
       }
 
     ];

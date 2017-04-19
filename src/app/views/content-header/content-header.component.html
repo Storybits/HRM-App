@@ -5,7 +5,7 @@
     <small>{{ pageDescription }}</small>
   </h1>
   <ol class="breadcrumb">
-    <li *ngFor="let level of levels; let i = index;" [ngClass]="level.class"  >{{ level.name }}</li>
+    <li *ngFor="let level of levels; let i = index;" [ngClass]="level.class"  >{{ level.name | translate }}</li>
 
   </ol>
 </section>

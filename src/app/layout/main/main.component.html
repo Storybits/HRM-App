@@ -1,7 +1,31 @@
-<!-- Header -->
-<app-header [appName]="appName"></app-header>
-<app-sidebar></app-sidebar>
-<!-- Content Wrapper. Contains page views -->
-<app-content></app-content>
-<!-- footer -->
-<app-footer [appVersion]="appVersion"></app-footer>
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to get the
+desired effect
+|---------------------------------------------------------|
+| SKINS         | skin-blue                               |
+|               | skin-black                              |
+|               | skin-purple                             |
+|               | skin-yellow                             |
+|               | skin-red                                |
+|               | skin-green                              |
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | fixed                                   |
+|               | layout-boxed                            |
+|               | layout-top-nav                          |
+|               | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
+<body class="hold-transition skin-green sidebar-mini" [hidden]="!authenticated">
+<div class="wrapper">
+  <!-- Header -->
+  <app-header [appName]="appName" [user]="user"></app-header>
+  <app-sidebar [user]="user"></app-sidebar>
+  <!-- Content Wrapper. Contains page views -->
+  <app-content></app-content>
+  <!-- footer -->
+  <app-footer [appVersion]="appVersion"></app-footer>
+</div>
+</body>

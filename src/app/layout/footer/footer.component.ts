@@ -10,5 +10,4 @@ export class FooterComponent  {
 
   @Input() appVersion: string;
 
-
 }

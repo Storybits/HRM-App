@@ -1,33 +1,32 @@
+// Modules
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule, JsonpModule} from '@angular/http';
-import {Routes, RouterModule} from '@angular/router';
+import { AppRoutingModule } from './app.routing.module';
 
+// Components
 import { AppComponent } from './app.component';
-import { EmployeeData } from './backend/employee-data';
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { BackendData } from './backend/backend-data';
 import { HeaderComponent } from './layout/header/header.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
-import { EmployeeListComponent } from './views/employee-list/employee-list.component';
+import { EmployeeListComponent } from './views/employee/employee-list/employee-list.component';
 import { ContentHeaderComponent } from './views/content-header/content-header.component';
 import { FooterComponent } from './layout/footer/footer.component';
-import { SigninComponent } from './auth/signin/signin.component';
+import { SigninComponent } from './views/signin/signin.component';
 import { ContentComponent } from './layout/content/content.component';
 import { MainComponent } from './layout/main/main.component';
-import { CreateEmployeeComponent } from './views/create-employee/create-employee.component';
-import { DeleteEmployeeComponent } from './views/delete-employee/delete-employee.component';
-import {ModalDialogComponent} from './views/modal-dialog/modal-dialog.component';
-import { DetailEmployeeComponent } from './views/detail-employee/detail-employee.component';
-import {ModalService} from './services/modal/modal.service';
+import { CreateEmployeeComponent } from './views/employee/create-employee/create-employee.component';
+import { DeleteEmployeeComponent } from './views/employee/delete-employee/delete-employee.component';
+import { ModalDialogComponent } from './views/modal-dialog/modal-dialog.component';
+import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 
-
-const appRoutes: Routes = [
-  { path: '', component: EmployeeListComponent },
-  { path: 'employees', component: EmployeeListComponent },
-  { path: 'create', component: CreateEmployeeComponent },
-  { path: 'delete', component: DeleteEmployeeComponent }
-];
+// Services and Pipes
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import {TRANSLATION_PROVIDERS} from './services/translation/translations';
+import { TranslatePipe } from './services/translation/translate.pipe';
+import { TranslateService } from './services/translation/translate.service';
+import { ModalService } from './services/modal/modal.service';
 
 
 @NgModule({
@@ -44,7 +43,8 @@ const appRoutes: Routes = [
     CreateEmployeeComponent,
     DeleteEmployeeComponent,
     ModalDialogComponent,
-    DetailEmployeeComponent
+    TranslatePipe,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -52,10 +52,10 @@ const appRoutes: Routes = [
     HttpModule,
     JsonpModule,
     ReactiveFormsModule,
-    InMemoryWebApiModule.forRoot(EmployeeData),
-    RouterModule.forRoot(appRoutes)
+    InMemoryWebApiModule.forRoot(BackendData),
+    AppRoutingModule
   ],
-  providers: [ModalService],
+  providers: [ModalService, TRANSLATION_PROVIDERS, TranslateService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

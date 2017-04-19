@@ -1,58 +1,70 @@
-import { Injectable } from '@angular/core';
-import {Http, RequestOptions, Response, Headers} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
+import {Injectable, OnDestroy} from '@angular/core';
+import { Http, RequestOptions, Response, Headers } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import {Employee} from './employee';
+import { Employee } from './employee.model';
+import {Subject} from 'rxjs/Subject';
+import {Helper} from '../helper';
+
 
 
 @Injectable()
-export class EmployeeService {
+export class EmployeeService implements OnDestroy {
 
   /**
    * Web api url
    * @type {string}
    */
   private employeeApiUrl = 'api/employees';
+  private employeeList = new Subject<any[]>();
+  public employeeList$ = this.employeeList.asObservable();
+  private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) { }
 
   /**
    * Returns an Observable of type Employee retrieved via http.get
-   * @returns {Observable<Employee>}
+   *
    */
-  getEmployees(): Observable<Employee[]> {
-    return this.http.get(this.employeeApiUrl).map(this.extractData).catch(this.handleError);
+  getEmployees() {
+    return this.http.get(this.employeeApiUrl).map(Helper.extractData).catch(Helper.handleError)
+      .subscribe(e => { this.employeeList.next(e); });
   }
 
   /**
-   * Add an employee
+   * Add an employee by calling http.post
    * @param employee
-   * @returns {Observable<R>}
+   * @returns {Observable<Employee>}
    */
-  addEmployee(employee: Employee): Observable<Employee> {
-    const headers = new Headers({'Content-Type': 'application/json'});
-    const options = new RequestOptions({headers: headers});
+  addEmployee(employee: Employee) {
+    const options = new RequestOptions({headers: this.headers});
     return this.http.post(this.employeeApiUrl, employee, options)
-      .map(this.extractData)
-      .catch(this.handleError);
+      .map(Helper.extractData)
+      .catch(Helper.handleError);
+    // .subscribe(e => { this.employeeList.next(e); });
   }
 
-  updateEmployee(employee: Employee): Observable<Employee> {
+  /**
+   * Update an employee by calling http.put
+   * @param employee
+   */
+  updateEmployee(employee: Employee) {
     const url = `${this.employeeApiUrl}/${employee.id}`;
-    const headers = new Headers({'Content-Type': 'application/json'});
-    const options = new RequestOptions({headers: headers});
+    const options = new RequestOptions({headers: this.headers});
     return this.http.put(url, employee, options)
-      .catch(this.handleError);
+      .catch(Helper.handleError);
   }
 
-
-  removeEmployee(employee: Employee): Observable<void> {
+  /**
+   * Remove an employee by calling http.delete
+   * @param employee
+   */
+  removeEmployee(employee: Employee) {
     const url = `${this.employeeApiUrl}/${employee.id}`;
-    const headers = new Headers({'Content-Type': 'application/json'});
-    const options = new RequestOptions({headers: headers});
+    const options = new RequestOptions({headers: this.headers});
     return this.http.delete(url, options)
-      .catch(this.handleError);
+      .catch(Helper.handleError);
   }
 
   /**
@@ -61,81 +73,80 @@ export class EmployeeService {
    * @param searchValue
    * @returns {Observable<Employee[]>}
    */
-  search(searchKey: string, searchValue: any) {
-    return (searchKey !== '' && searchValue !== '') ? this.http.get(this.employeeApiUrl)
-      .map(response => this.searchEmployee(response, searchKey, searchValue))
-      .catch(this.handleError) : this.getEmployees();
+  search(searchKey: string, searchValue: any)  {
+    (searchKey !== '' && searchValue !== '') ?
+       this.http.get(this.employeeApiUrl)
+         .map(response => this.searchEmployee(response, searchKey, searchValue))
+         .catch(Helper.handleError).subscribe(e => this.employeeList.next(e))
+     : this.getEmployees();
   }
 
   /**
-   * Extracts data found by http call
-   * @param res
-   * @returns {}
+   * Set sort Direction
+   * @param a
+   * @param b
+   * @param descending
+   * @returns {boolean}
    */
-  private extractData(res: Response): any [] {
-    const body = res.json();
-    return body.data || {};
+  private sortDirection(a: any, b: any, descending: boolean) {
+    return (descending) ? a < b : a > b;
   }
 
-    /**
+  /**
+   * QuickSort
+   * @param array
+   * @param key
+   * @param orderType
+   */
+  sortObjects (array, key, descending: boolean)  {
+
+    for (let i = 0; i < array.length; i++) {
+      const currVal = array[i][key];
+      const currElem = array[i];
+      let j = i - 1;
+      while ((j >= 0) && this.sortDirection(array[j][key], currVal, descending)) {
+        array[j + 1] = array[j];
+        j--;
+      }
+      array[j + 1] = currElem;
+    }
+    this.employeeList.next(array);
+  }
+
+
+  /**
    * Search employee by giving a key and value (searchKey all iniaties a full scale search on all elements)
    * @param res
    * @param searchKey
    * @param searchValue
    * @returns {Array}
    */
-  private searchEmployee(res: Response, searchKey: string, searchValue: any): any[] {
-    const data = this.extractData(res);
+  private searchEmployee(res: Response, searchKey: string, searchValue: any): Employee[] {
+    const data = Helper.extractData(res);
     const foundValues = [];
     const regex = new RegExp(searchValue, 'gi');
 
-    for (const employee of data) {
-      /**
-       * search for specific key O(n) worst case
-       */
-      if (employee.hasOwnProperty(searchKey) && employee[searchKey].toLowerCase().match(regex)) {
-        foundValues.push(employee);
-      } else {
-        /**
-         * search all keys O(n*n) worst case
-         */
-        for (const key in employee) {
-          if (employee[key].toString().toLowerCase().match(regex)
-            && !this.inArray(employee, foundValues)) {
-              foundValues.push(employee);
+    data.filter(employee => {
+      // search all keys indiscriminately
+      if (searchKey === 'all') {
+        const keyArr: any[] = Object.keys(employee);
+        keyArr.forEach((key: any) => {
+          if (employee[key].toString().match(regex) && !Helper.inArray(employee, foundValues)) {
+            foundValues.push(employee);
           }
-        }
+        });
+      } else if (employee.hasOwnProperty(searchKey) && employee[searchKey].toLowerCase().match(regex)) {
+        foundValues.push(employee);
       }
-    }
+    });
+
     return foundValues;
   }
 
-  /**
-   * Convenience function to search inArray by object
-   * @param employee
-   * @param array
-   * @returns {boolean}
-   */
-  private inArray(employee: Employee, array: Employee[]) {
-    return array.indexOf(employee) > -1;
+  ngOnDestroy() {
+    this.employeeList.subscribe();
   }
 
-/**
-   * Catches errors when calling http.get
-   * @param error
-   * @returns {any}
-   */
-  private handleError(error: Response | any) {
-    let errorMessage: string;
-    if (error instanceof Response) {
-      const body = error.json() || '';
-      const err = body.error || JSON.stringify(body);
-      errorMessage = `${error.status} - ${error.statusText || ''} ${err}`;
-    } else {
-      errorMessage = error.message ? error.message : error.toString();
-    }
-    console.log(errorMessage);
-    return Observable.throw(errorMessage);
-  }
+
 
 }

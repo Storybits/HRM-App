@@ -1,6 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
-import {Employee} from '../../services/employee/employee';
-import {ModalService} from '../../services/modal/modal.service';
+import {Employee} from '../../../services/employee/employee.model';
+import {ModalService} from '../../../services/modal/modal.service';
 import {Subscription} from 'rxjs/Subscription';
 
 
@@ -13,28 +13,30 @@ export class DeleteEmployeeComponent implements OnDestroy {
 
   private subscription = new Subscription;
   private employee =  new Employee();
-  announced = false;
 
   constructor(private modalService: ModalService) {
+    // Subscription to modalservice
     this.subscription = this.modalService.objectSend$.subscribe(
       employee => {
         this.employee = employee;
-        this.announced = true;
       }
     );
 
   }
 
-
-  deleteAction(employee: Employee) {
+  /**
+   * Send the delete commmand to the subscribed parent (employee-list)
+   * @param employee
+   */
+  deleteAction(employee: Employee): void {
       this.modalService.deleteObject(employee);
       this.hideModal();
-
-
-
   }
 
-  hideModal() {
+  /**
+   * Hide the modal
+   */
+  hideModal(): void {
     this.modalService.closeModal();
   }
 
