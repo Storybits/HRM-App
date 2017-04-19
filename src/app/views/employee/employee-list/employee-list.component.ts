@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Employee} from '../../../services/employee/employee.model';
 import {EmployeeService} from '../../../services/employee/employee.service';
 import {PaginatorService} from '../../../services/paginator/paginator.service';
@@ -41,7 +41,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   @ViewChild('createDialog') private createDialogModal: ModalDialogComponent;
   @ViewChild('deleteDialog') private deleteDialogModal: ModalDialogComponent;
 
-  @ViewChild('term') private searchTerm: ElementRef;
+  // @ViewChild('term') private searchTerm: ElementRef;
 
   constructor(private employeeService: EmployeeService,
               private paginatorService: PaginatorService,
@@ -93,17 +93,12 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
     // add new Employee
     if (Helper.isEmpty(employee.id)) {
       employee.id = undefined;
-      this.employeeService.addEmployee(employee).subscribe(
-        () => {
-          this.employees.push(employee);
-          this.setPage(this.pager.totalPages);
-        }
-      );
+      this.employeeService.addEmployee(employee);
     } else {
       // update employee
       this.employeeService.updateEmployee(employee).subscribe(
         () => {
-          this.employees = this.employees.map(e => {return e = (e.id === employee.id) ? employee : e; });
+          this.employees = this.employees.map(e => {return (e.id === employee.id) ? employee : e; });
           this.setPage(this.pager.currentPage);
         }
       );
@@ -128,17 +123,16 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
    * @param employee
    * @param action: default = create/edit dialog
    */
-  openDialog(employee: Employee, action: string = 'create') {
+  openDialog(employee: Employee = new Employee(), action: string = 'create') {
     this.modalService.sendObject(employee);
     if (action === 'delete') {
       this.deleteDialogModal.show();
     } else  {
       this.createDialogModal.show();
     }
-
   }
 
-  /**
+ /**
    * Initiate sorting
    * @param columnName
    */

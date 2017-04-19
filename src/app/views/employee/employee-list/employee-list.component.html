@@ -6,7 +6,7 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="form-group">
-        <button class="btn btn-primary" (click)="createDialog.show()">
+        <button class="btn btn-primary" (click)="openDialog()">
           <span class="glyphicon glyphicon-user"></span> {{ 'Create employee' | translate }}
         </button>
       </div>
@@ -65,7 +65,8 @@
         <div class="box-body table-responsive no-padding">
           <table class="table table-bordered table-hover dataTable">
             <thead>
-              <tr role="row DTTT_selectable">
+              <tr role="row">
+                <th [class]="selectedClass('id')" (click)="sortEmployees('id')">{{ 'ID' | translate }}</th>
                 <th [class]="selectedClass('first_name')" (click)="sortEmployees('first_name')">{{ 'First name' | translate }}</th>
                 <th [class]="selectedClass('last_name')" (click)="sortEmployees('last_name')">{{ 'Last name' | translate }}</th>
                 <th [class]="selectedClass('job_role')" (click)="sortEmployees('job_role')">{{ 'Job role' | translate }}</th>
@@ -74,6 +75,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let employee of pagedItems" role="row">
+                <td (click)="openDialog(employee)" style="cursor: pointer">{{ employee.id }}</td>
                 <td (click)="openDialog(employee)" style="cursor: pointer">{{ employee.first_name }}</td>
                 <td (click)="openDialog(employee)" style="cursor: pointer">{{ employee.last_name }}</td>
                 <td (click)="openDialog(employee)" style="cursor: pointer">{{ employee.job_role }}</td>

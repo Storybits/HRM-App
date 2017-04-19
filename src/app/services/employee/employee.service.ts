@@ -39,10 +39,9 @@ export class EmployeeService implements OnDestroy {
    */
   addEmployee(employee: Employee) {
     const options = new RequestOptions({headers: this.headers});
-    return this.http.post(this.employeeApiUrl, employee, options)
+    this.http.post(this.employeeApiUrl, employee, options)
       .map(Helper.extractData)
-      .catch(Helper.handleError);
-    // .subscribe(e => { this.employeeList.next(e); });
+      .catch(Helper.handleError).subscribe(() => this.getEmployees());
   }
 
   /**
@@ -81,22 +80,12 @@ export class EmployeeService implements OnDestroy {
      : this.getEmployees();
   }
 
-  /**
-   * Set sort Direction
-   * @param a
-   * @param b
-   * @param descending
-   * @returns {boolean}
-   */
-  private sortDirection(a: any, b: any, descending: boolean) {
-    return (descending) ? a < b : a > b;
-  }
 
   /**
    * QuickSort
    * @param array
    * @param key
-   * @param orderType
+   * @param descending
    */
   sortObjects (array, key, descending: boolean)  {
 
@@ -104,7 +93,7 @@ export class EmployeeService implements OnDestroy {
       const currVal = array[i][key];
       const currElem = array[i];
       let j = i - 1;
-      while ((j >= 0) && this.sortDirection(array[j][key], currVal, descending)) {
+      while ((j >= 0) && Helper.sortDirection(array[j][key], currVal, descending)) {
         array[j + 1] = array[j];
         j--;
       }

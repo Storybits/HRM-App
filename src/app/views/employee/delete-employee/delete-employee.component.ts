@@ -40,6 +40,7 @@ export class DeleteEmployeeComponent implements OnDestroy {
     this.modalService.closeModal();
   }
 
+
   ngOnDestroy() {
     // prevent memory leak when component destroyed
     this.subscription.unsubscribe();

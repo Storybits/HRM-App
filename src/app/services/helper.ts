@@ -11,7 +11,9 @@ export class Helper {
    * @param val
    * @returns {boolean}
    */
-  public static isEmpty = function(val) { return (val === undefined || val == null  || val.length <= 0) ? true : false; }
+  public static isEmpty(val) {
+    return (val === undefined || val == null  || val.length <= 0) ? true : false;
+  }
 
   /**
    * Catches errors on http Response and logs to console
@@ -33,7 +35,7 @@ export class Helper {
 
   /**
    * Convenience function to search inArray by object
-   * @param employee
+   * @param object
    * @param array
    * @returns {boolean}
    */
@@ -66,6 +68,17 @@ export class Helper {
       d = Math.floor(d / 16);
       return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
+  }
+
+  /**
+   * Set sort Direction
+   * @param a
+   * @param b
+   * @param descending
+   * @returns {boolean}
+   */
+  public static sortDirection(a: any, b: any, descending: boolean) {
+    return (descending) ? a < b : a > b;
   }
 
 }

@@ -4,6 +4,7 @@ import {FormValidator} from '../../../services/form/form-validator';
 import {Employee} from '../../../services/employee/employee.model';
 import {ModalService} from '../../../services/modal/modal.service';
 import {Subscription} from 'rxjs/Subscription';
+import {Helper} from '../../../services/helper';
 
 
 
@@ -35,15 +36,18 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy {
     // Subscribe to modalService to get data when sent
     this.subscription = this.modalService.objectSend$.subscribe(
       employee =>  {
-        this.employee = employee;
-        this.populateForm();
+        if ((Helper.isEmpty(employee.id))) {
+          this.clearForm();
+        } else {
+          this.employee = employee;
+          this.populateForm();
+        }
+
       }
     );
   }
 
   ngOnInit() {
-    // set default value for radio button
-    this.form.controls['gender'].setValue('Male');
 
   }
 
@@ -55,7 +59,7 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy {
     this.first_name = new FormControl('', Validators.required);
     this.last_name = new FormControl('', Validators.required);
     this.email = new FormControl('', Validators.compose([Validators.required, FormValidator.mailFormat]));
-    this.gender = new FormControl('', Validators.required);
+    this.gender = new FormControl('Male', Validators.required);
     this.address = new FormControl('');
     this.job_role = new FormControl('', Validators.required);
 
@@ -101,7 +105,6 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy {
     this.submitted = true;
 
     if (isValid) {
-
       // this.addEmployee.emit(model);
       this.modalService.saveObject(employee);
       this.hideModal();
@@ -113,11 +116,17 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy {
    * Hide the modal and clear the form fields
    */
   hideModal(): void {
-    FormValidator.clearFormValues(this.form);
-    FormValidator.clearFormErrors(this.form);
-    this.employee = new Employee();
-    this.form.controls['gender'].setValue('Male');
+    this.clearForm();
     this.modalService.closeModal();
+  }
+
+  /**
+   * clear the form for the next dialog
+   */
+  private clearForm() {
+    this.submitted = false;
+    this.form.clearValidators();
+    this.createForm();
   }
 
   ngOnDestroy() {
