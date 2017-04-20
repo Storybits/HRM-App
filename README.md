@@ -43,9 +43,6 @@ src
 │   │   ├── main
 │   │   │   ├── main.component.html
 │   │   │   ├── main.component.ts
-│   │   ├── header
-│   │   │   ├── header.component.html
-│   │   │   ├── header.component.ts
 │   │   ├── sidebar
 │   │   │   ├── sidebar.component.html
 │   │   │   ├── sidebar.component.ts
